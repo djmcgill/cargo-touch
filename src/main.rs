@@ -1,4 +1,4 @@
-use cargo_toml::Manifest;
+use cargo_toml::{Manifest, Product};
 use env_logger::{Builder, Env};
 use filetime::set_file_mtime;
 use log::*;
@@ -25,17 +25,28 @@ fn run_with_toml_path(path: impl AsRef<Path>) -> Result<(), Box<dyn Error>> {
     trace!("Completed manifest");
 
     for bin in &manifest.bin {
-        if let Some(bin_path) = &bin.path {
-            trace!("Bin path found: {:?}", bin_path);
-            set_file_mtime(path.as_ref().join(bin_path), SystemTime::now().into())?;
-        }
+        trace!("Bin found: {:?}", bin);
+        set_modified_time(&path, bin)?;
     }
 
     if let Some(lib) = &manifest.lib {
-        if let Some(lib_path) = &lib.path {
-            trace!("Lib path found: {:?}", lib_path);
-            set_file_mtime(path.as_ref().join(lib_path), SystemTime::now().into())?;
-        }
+        trace!("Lib found: {:?}", lib);
+        set_modified_time(&path, lib)?;
+    }
+
+    for test in &manifest.test {
+        trace!("Test found: {:?}", test);
+        set_modified_time(&path, test)?;
+    }
+
+    for example in &manifest.example {
+        trace!("Example found: {:?}", example);
+        set_modified_time(&path, example)?;
+    }
+
+    for bench in &manifest.bench {
+        trace!("Bench found: {:?}", bench);
+        set_modified_time(&path, bench)?;
     }
 
     if let Some(workspace) = &manifest.workspace {
@@ -45,6 +56,16 @@ fn run_with_toml_path(path: impl AsRef<Path>) -> Result<(), Box<dyn Error>> {
         }
     }
 
-    // FIXME: tests, examples, benches
+    Ok(())
+}
+
+fn set_modified_time(path: impl AsRef<Path>, product: &Product) -> Result<(), Box<dyn Error>> {
+    if let Some(sub_path) = &product.path {
+        let sub_toml_file = path.as_ref().join(sub_path);
+        trace!("Sub path found: {:?}", sub_toml_file);
+
+        // TODO: set access time too?
+        set_file_mtime(sub_toml_file, SystemTime::now().into())?;
+    }
     Ok(())
 }

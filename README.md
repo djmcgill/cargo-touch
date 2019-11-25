@@ -3,7 +3,7 @@ A tiny utility that touches all lib/main files in the current cargo workspace/pr
 The problem with `cargo clean` is that it forces recompilation of all your dependencies too. 
 
 ## TODO
- * Also support tests/examples/benchmarks
+ * More descriptive errors
 
 ## License
 

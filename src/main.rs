@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     Builder::from_env(Env::default().default_filter_or("info")).try_init()?;
     info!("Starting cargo-touch from current directory");
     run_with_toml_path(".")?;
-    info!("Touching complete (n.b. touching of tests/examples/benchmarks not yet supported)");
+    info!("Touching complete!");
     Ok(())
 }
 

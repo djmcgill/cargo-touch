@@ -1,5 +1,5 @@
 # Cargo Touch
-A tiny utility that touches all lib/main files in the current cargo workspace/project to force its recompilation.
+A tiny utility that updates the modification time on all lib/main/test/example/bench files in the current cargo workspace/project to force its recompilation.
 The problem with `cargo clean` is that it forces recompilation of all your dependencies too. 
 
 ## TODO

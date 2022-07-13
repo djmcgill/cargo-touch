@@ -4,6 +4,7 @@ version = "0.2.0"
 authors = ["David McGillicuddy <david.mcgillicuddy@moixa.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
+description = "A tiny utility that updates the modification time on all lib/main/test/example/bench files in the current cargo workspace/project to force its recompilation."
 
 [dependencies]
 cargo_toml = "0.11.5"
